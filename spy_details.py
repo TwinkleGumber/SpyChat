@@ -12,6 +12,8 @@ class Spy:
         self.is_online = True
         self.chats = []
         self.current_status_message = None
+        self.chats_avg = [0,0]
+
 
 
 class ChatMessage:

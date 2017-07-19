@@ -118,6 +118,9 @@ def read_message():
     secret_text = Steganography.decode(output_path)
     new_chat = ChatMessage(secret_text,False)
     friends[sender].chats.append(new_chat)
+    friends[sender].chats_avg[0] += len(secret_text)
+    friends[sender].chats_avg[1] += 1
+
 
     words = secret_text.split("_")
 #  Delete a spy from your list of spies if they are speaking too much i.e. more than 100 words
@@ -142,13 +145,15 @@ def read_message():
             item_number = item_number + 1
 
 
-        # Maintain the average number of words spoken by a spy everytime you receive a message from a particular spy.
-    words_in_message = secret_text.split()
-    print "\n  Number of words the message contains: " + str(len(secret_text.split()))
-    print "  The average of number of words spoken by your spy friend: %0.1f" %(sum(len(word) for word in words_in_message)/len(words_in_message))
+ # Maintain the average number of words spoken by a spy everytime you receive a message from a particular spy.
 
+    def show_avg():
+        sender = select_a_friend()
+        print "Total number of words: " + str(( friends[sender].chats_avg)[0])
+        print "Number of chats: " + str(( friends[sender].chats_avg)[1])
+        print "Average number of words spoken by spy friend: " + str(( friends[sender].chats_avg)[0]/float(( friends[sender].chats_avg)[1]))
 
-
+    show_avg()
 
 
 
@@ -214,6 +219,14 @@ else:                             # For new user app will ask for the name of th
 
         spy.rating = raw_input("What is your spy rating?")              # Ask the user for their rating and convert it to float
         spy.rating = float(spy.rating)
+        if spy.rating > 4.5:
+            print 'Great ace!'
+        elif spy.rating > 3.5 and spy.rating <= 4.5:
+            print 'You are one of the good ones.'
+        elif spy.rating >= 2.5 and spy.rating <= 3.5:
+            print 'You can always do better'
+        else:
+            print 'We can always need somebody to help others in the office.'
 
         start_chat(spy)
 
